@@ -152,6 +152,21 @@ app.get('/script.js', (req, res) => {
     res.send(appJS);
 });
 
+app.use((req, res, next) => {
+    res.setHeader(
+        'Content-Security-Policy',
+        "default-src 'self'; script-src 'self'; style-src 'self';"
+    );
+    next();
+});
+
+document.addEventListener('contextmenu', (e) => e.preventDefault());
+document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && (e.key === 'u' || e.key === 'c' || e.key === 's')) {
+        e.preventDefault();
+    }
+});
+
 // Start the server
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
